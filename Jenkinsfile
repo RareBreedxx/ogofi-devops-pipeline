@@ -28,7 +28,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
           sh """
             echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
-            docker push "$rarebreedxx:${BUILD_NUMBER"
+            docker push "$rarebreedxx:$BUILD_NUMBER"
             docker push "$rarebreedxx}:latest"
           """
         }
@@ -56,10 +56,8 @@ pipeline {
     stage('Show URL') {
       steps {
         sh """
-          echo "Service:"
+          set -eux
           kubectl get svc ogofi-web-svc -n "$K8S_NS" -o wide
-
-          echo "URL:"
           minikube service ogofi-web-svc -n "$K8S_NS" --url
         """
       }
@@ -69,7 +67,7 @@ pipeline {
   post {
     always {
       sh 'docker logout || true'
-      sh 'kubectl get pods -n ${K8S_NS} || true'
+      sh 'kubectl get pods -n default|| true'
     }
   }
 }
