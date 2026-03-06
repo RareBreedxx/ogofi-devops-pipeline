@@ -17,8 +17,8 @@ pipeline {
     stage('Build Image') {
       steps {
         sh """
-          docker build -t ${rarebreedxx}:${BUILD_NUMBER} .
-          docker tag ${rarebreedxx}:${BUILD_NUMBER} ${rarebreedxx}:latest
+          docker build -t "$rarebreedxx}:${BUILD_NUMBER" .
+          docker tag "$rarebreedxx}:${BUILD_NUMBER" "$rarebreedxx:latest"
         """
       }
     }
@@ -28,8 +28,8 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
           sh """
             echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
-            docker push ${rarebreedxx}:${BUILD_NUMBER}
-            docker push ${rarebreedxx}:latest
+            docker push "$rarebreedxx:${BUILD_NUMBER"
+            docker push "$rarebreedxx}:latest"
           """
         }
       }
@@ -47,8 +47,8 @@ pipeline {
     stage('Update Image + Rollout') {
       steps {
         sh """
-          kubectl set image deployment/${K8S_DEPLOY} web=${rarebreedxx}:${BUILD_NUMBER} -n ${K8S_NS}
-          kubectl rollout status deployment/${K8S_DEPLOY} -n ${K8S_NS} --timeout=180s
+          kubectl set image deployment/"$K8S_DEPLOY" web="$rarebreedxx}:$BUILD_NUMBER" -n $"K8S_NS"
+          kubectl rollout status deployment/"$K8S_DEPLOY" -n "$K8S_NS" --timeout=180s
         """
       }
     }
@@ -57,10 +57,10 @@ pipeline {
       steps {
         sh """
           echo "Service:"
-          kubectl get svc ogofi-web-svc -n ${K8S_NS} -o wide
+          kubectl get svc ogofi-web-svc -n "$K8S_NS" -o wide
 
           echo "URL:"
-          minikube service ogofi-web-svc -n ${K8S_NS} --url
+          minikube service ogofi-web-svc -n "$K8S_NS" --url
         """
       }
     }
@@ -68,8 +68,8 @@ pipeline {
 
   post {
     always {
-      sh "docker logout || true"
-      sh "kubectl get pods -n ${K8S_NS} || true"
+      sh 'docker logout || true'
+      sh 'kubectl get pods -n ${K8S_NS} || true'
     }
   }
 }
