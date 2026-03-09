@@ -62,7 +62,7 @@ pipeline {
         sh """
           set -eux
           kubectl get svc ogofi-web-svc -n "${K8S_NS}" -o wide
-          minikube service ogofi-web-svc -n "${K8S_NS}" --url  \\ true
+          echo "App URL: http://\$(minikube ip):32387"
         """
       }
     }
