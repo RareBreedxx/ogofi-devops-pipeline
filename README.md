@@ -1,30 +1,71 @@
-# A Static Site using Docker and Nginx
+# Ogofi DevOps CI/CD Pipeline
 
-This repo contains code for building a simple static website served using an Nginx container inside Docker. The code for the site is contained in `index.html`, and the Nginx config is in `default.conf`. The Dockerfile contains commands to build a Docker Image.
+## Project Overview
 
-To build a Docker image from the Dockerfile, run the following command from inside this directory
+This project demonstrates a complete CI/CD pipeline that automates building, pushing, and deploying a containerized web application using Jenkins, Docker, Docker Hub, Kubernetes, and Minikube.
 
-```sh
-$ docker build -t <docker-hub-username>/staticsite:1.0 .
-```
-This will produce the following output
+The pipeline automatically builds a Docker image, pushes it to Docker Hub, updates a Kubernetes deployment, and exposes the application through a NodePort service.
 
-```sh
-Sending build context to Docker daemon 81.41 kB
-Step 1/3 : FROM nginx:alpine
- ---> 2f3c6710d8f2
-Step 2/3 : COPY default.conf /etc/nginx/conf.d/default.conf
- ---> Using cache
- ---> 176c56cc07b6
-Step 3/3 : COPY index.html /usr/share/nginx/html/index.html
- ---> 3407953dafd0
-Removing intermediate container cb64bb3e3aca
-Successfully built 3407953dafd0
-```
+---
 
-To run the image in a Docker container, use the following command
-```sh
-$ docker run -itd --name mycontainer --publish 8080:80 <docker-hub-username>/staticsite:1.0
-```
+## Architecture
 
-This will start serving the static site on port 8080. If you visit `http://localhost:8080` in your browser, you should be able to see our static site!
+Developer → GitHub → Jenkins → Docker Build → Docker Hub → Kubernetes Deployment → NodePort Service → Browser
+
+---
+
+## Technologies Used
+
+- Jenkins
+- Docker
+- Docker Hub
+- Kubernetes
+- Minikube
+- Nginx
+- GitHub
+
+---
+
+## CI/CD Pipeline Stages
+
+1. Checkout source code from GitHub
+2. Build Docker image
+3. Tag Docker image
+4. Push image to Docker Hub
+5. Apply Kubernetes manifests
+6. Update deployment image
+7. Verify rollout status
+8. Display application URL
+
+---
+
+## Kubernetes Resources
+
+Deployment:
+	Ogofi-web
+Service:
+	Ogofi-web-svc
+
+
+---
+
+## Application Access
+
+The application is exposed using a NodePort service.
+
+
+---
+
+## Key DevOps Concepts Demonstrated
+
+- CI/CD automation
+- Docker containerization
+- Image registry usage
+- Kubernetes deployment updates
+- Infrastructure automation using Jenkins pipelines
+
+---
+
+## Author
+
+Yinka Fadoju
